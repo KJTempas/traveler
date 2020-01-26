@@ -9,12 +9,31 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "name='" + name + '\'' +
+                "name='" + name + '\'' +   //why all the " and '????
                 "type='" + type +
                 ", id='" + id + '\'' +
                // ", _embedded=" + _embedded +
                 '}';
     }
 
-
 }
+
+class Venue {
+    String name;
+    String city;
+    String state;
+    String dmas;
+
+    @Override
+    public String toString() {
+        return "Venue{" +
+                "name=" + name +
+                "city=" + city +
+                "state=" + state +
+                '}';
+
+
+
+    }
+}
+
