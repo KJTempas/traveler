@@ -1,4 +1,4 @@
-public class Event {
+public class Events {
     String name;
     String type;
     String id;
@@ -12,13 +12,13 @@ public class Event {
                 "name='" + name + '\'' +   //why all the " and '????
                 "type='" + type +
                 ", id='" + id + '\'' +
-               // ", _embedded=" + _embedded +
+               // ", _embedded=" + _embedded +  //this should get me to Venues class
                 '}';
     }
 
 }
 
-class Venue {
+class Venues {
     String name;
     String city;
     String state;

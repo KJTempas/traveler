@@ -89,7 +89,7 @@ public class Main {
     }
     //inside the embedded object is another embedded object
     class Embedded {
-       List<Event> events;
+       List<Events> events;
 
         @Override
         public String toString() {
@@ -98,7 +98,9 @@ public class Main {
                     '}';
         }
     }
+ //class _embedded {
 
+ //}
 
 
 
