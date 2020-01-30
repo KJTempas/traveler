@@ -1,4 +1,6 @@
-public class Event {
+import java.util.List;
+
+class Event {
     String name;
     String type;
     String id;
@@ -52,3 +54,42 @@ class Venues {
     }
 }
 
+public class TicketMasterResponse {
+    //creating an embedded object
+    public Embedded _embedded;
+    
+    @Override
+    public String toString() {
+        return "TicketMasterResponse{" +
+                "_embedded=" + _embedded +
+                '}';
+    }
+    
+    public Embedded get_embedded() {
+        return _embedded;
+    }
+    
+    public void set_embedded(Embedded _embedded) {
+        this._embedded = _embedded;
+    }
+}
+
+//inside the embedded object is another embedded object
+class Embedded {
+    List<Event> events;
+    
+    @Override
+    public String toString() {
+        return "Embedded{" +
+                "events=" + events +
+                '}';
+    }
+    
+    public List<Event> getEvents() {
+        return events;
+    }
+    
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+}
