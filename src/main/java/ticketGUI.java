@@ -58,7 +58,7 @@ public class ticketGUI extends JFrame {
                 System.out.println(city);
                 //get value(dmaID) associated with that city from HashMap
                 String dma = cityAndDmaID.get(city);
-                //send the dma to the API
+                //send the dma to the API in Main class
                 Main.getEventsPerCity(dma);
 
             }

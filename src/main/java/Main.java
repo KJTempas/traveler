@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-static ticketGUI gui;
+
 
 public class Main {
     public static void main(String[] args) {
+        //ticketGUI gui;
+        //gui = new ticketGUI();
 
-        gui = new ticketGUI();
+        ticketGUI = new ticketGUI();
+
         public List<Event> getEventsPerCity(String dma){
 
 
