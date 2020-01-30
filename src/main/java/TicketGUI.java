@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
-public class ticketGUI extends JFrame {
+public class TicketGUI extends JFrame {
     private JLabel topLabel;
     private JComboBox<String> cityChoices;
     private JLabel cityName;
     private JLabel startDate;
     private JPanel mainPanel;
-    //need two date spinners - one for first date/ one for last date?
     private JSpinner startDateSpinner;
 
     private JTable eventsTable;
@@ -25,12 +25,13 @@ public class ticketGUI extends JFrame {
 //hashMap of cities and dmaID (which is used in query)
     Map<String, String> cityAndDmaID = new HashMap<>();
 
-    public ticketGUI() {
+    public TicketGUI() {
         //setting up combo box for user selection of city
         String[] cities = {"Boston", "Chicago", "Denver", "Kansas City", "Minneapolis/St.Paul",};
         DefaultComboBoxModel<String> cityModel = new DefaultComboBoxModel<>(cities);
         cityChoices.setModel(cityModel);
 
+        configureTableAtStart();
         setHashMap();
         addListeners();
         setTitle("Find events in the city");
@@ -38,6 +39,7 @@ public class ticketGUI extends JFrame {
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
 
     void setHashMap() {
@@ -59,27 +61,66 @@ public class ticketGUI extends JFrame {
                 //get value(dmaID) associated with that city from HashMap
                 String dma = cityAndDmaID.get(city);
                 //send the dma to the API in Main class
-                Main.getEventsPerCity(dma);
+                /*API api = new API(); //one way of doing it
+                List<Event> events = api.getEventsPerCity(dma);*/
+
+                List<Embedded.Event> events = API.getEventsPerCity(dma);
+
+                Vector vectors = convertEventListToVector(events);
+                updateEventsTable(vectors);
+
 
             }
 
         });
     }
 
-        Vector getColumnNames () {
+
+            private Vector convertEventListToVector(List<Embedded.Event> events) {
+                Vector v = new Vector();
+                Vector test = new Vector();
+                for (Embedded.Event e : events) {
+                    test.add(e.getName());
+                }
+                v.add(test);
+
+                System.out.println("Example vector"  + v);
+                return v;
+            }
+
+
+
+
+            void getColumnNames () {
             Vector colNames = new Vector();
             colNames.add("Event Name");
             colNames.add("Venue Name");
+            columnNames = colNames;
 
-            return colNames;
         }
 
-        protected void configureTableAtStart (Vector colNames){
+        protected void configureTableAtStart (){
             eventsTable.setGridColor(Color.BLACK);
             eventsTable.setAutoCreateRowSorter(true);  //enables sorting
             getColumnNames();
             Vector data = new Vector();
-            tableModel = new DefaultTableModel(data, colNames) {
+            // mock data
+            Vector test = new Vector();
+//            test.add("test");
+//            test.add("test");
+//
+//            // mock data
+            Vector test2 = new Vector();
+//            test2.add("test2");
+//            test2.add("test2");
+//
+            data.add(test);
+            data.add(test2);
+//
+
+
+            tableModel = new DefaultTableModel(data, columnNames) {
+
                 @Override
                 public boolean isCellEditable(int row, int col) {
                     return false;    //cells are not editable
@@ -93,6 +134,7 @@ public class ticketGUI extends JFrame {
         private void updateEventsTable (Vector data){
             //data should come back from the API call
             tableModel.setDataVector(data, columnNames);
+            System.out.println("vector  ?? " + tableModel.getDataVector());
         }
     }
 
