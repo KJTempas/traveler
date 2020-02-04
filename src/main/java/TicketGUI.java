@@ -18,14 +18,18 @@ public class TicketGUI extends JFrame {
     private DefaultTableModel tableModel;
     private Vector columnNames;
     private JButton submitButton;
+    private JList<String> eventList;
     //private Manager manager;
-
+    private DefaultListModel<String> listModel;
 
 
 //hashMap of cities and dmaID (which is used in query)
     Map<String, String> cityAndDmaID = new HashMap<>();
 
     public TicketGUI() {
+        listModel = new DefaultListModel<>();
+        eventList.setModel(listModel);
+        eventList.setVisibleRowCount(20);
         //setting up combo box for user selection of city
         String[] cities = {"Boston", "Chicago", "Denver", "Kansas City", "Minneapolis/St.Paul",};
         DefaultComboBoxModel<String> cityModel = new DefaultComboBoxModel<>(cities);
@@ -34,7 +38,9 @@ public class TicketGUI extends JFrame {
         configureTableAtStart();
         setHashMap();
         addListeners();
+
         setTitle("Find events in the city");
+        setPreferredSize(new Dimension(800, 600));
         setContentPane(mainPanel);
         pack();
         setVisible(true);
@@ -57,18 +63,29 @@ public class TicketGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //get user input from JCombo box
                 String city = (String) cityChoices.getSelectedItem();
-                System.out.println(city);
+                System.out.println(city);  //works
                 //get value(dmaID) associated with that city from HashMap
                 String dma = cityAndDmaID.get(city);
-                //send the dma to the API in Main class
+                System.out.println(dma); //works
                 /*API api = new API(); //one way of doing it
                 List<Event> events = api.getEventsPerCity(dma);*/
-
-                List<Embedded.Event> events = API.getEventsPerCity(dma);
-
+                //send the dma to the API method and get back a list of embedded events
+                List<Embedded.Event> events = API.getEventsPerCity(dma);  //this is not getting to the API method
+                //send events list to method to convert it to vectors for display in the JTable
+                System.out.println("events back from API" + events);//vector of objects prints
                 Vector vectors = convertEventListToVector(events);
-                updateEventsTable(vectors);
-
+                System.out.println("vectors after conversion from eventList" + vectors);  //prints vector
+                //updateEventsTable(vectors);
+                System.out.println(vectors.size()); //prints a number like 20
+                int length = vectors.size();
+                for(int i=0; i<vectors.size(); i++) {
+                    listModel.addElement(vectors[i]); //error -array type expected; found Vector
+                }
+                //for(int i=0; i<vectors.length, i++) { //length not recognized
+                //for(String event: vectors) {    //error-required object, found string
+                   // System.out.println(event);
+                    //listModel.addElement(event);
+               // }
 
             }
 
@@ -77,47 +94,33 @@ public class TicketGUI extends JFrame {
 
 
             private Vector convertEventListToVector(List<Embedded.Event> events) {
-                Vector v = new Vector();
+                Vector data = new Vector();
                 Vector test = new Vector();
-                for (Embedded.Event e : events) {
-                    test.add(e.getName());
-                }
-                v.add(test);
+                for (Embedded.Event e : events) {  //loop through events, and get name; add to the new vector v
+                    data.add(e.getName());
 
-                System.out.println("Example vector"  + v);
-                return v;
+                }
+
+                System.out.println("Example vector"  + data);  //prints a vector
+                return data;
             }
 
 
-
-
-            void getColumnNames () {
+            Vector getColumnNames () {
             Vector colNames = new Vector();
             colNames.add("Event Name");
             colNames.add("Venue Name");
             columnNames = colNames;
 
+            return columnNames;
         }
 
         protected void configureTableAtStart (){
             eventsTable.setGridColor(Color.BLACK);
             eventsTable.setAutoCreateRowSorter(true);  //enables sorting
             getColumnNames();
-            Vector data = new Vector();
-            // mock data
-            Vector test = new Vector();
-//            test.add("test");
-//            test.add("test");
-//
-//            // mock data
-            Vector test2 = new Vector();
-//            test2.add("test2");
-//            test2.add("test2");
-//
-            data.add(test);
-            data.add(test2);
-//
-
+            System.out.println(columnNames); //they do print
+            Vector data = new Vector();  //to hold response from API call
 
             tableModel = new DefaultTableModel(data, columnNames) {
 
@@ -127,56 +130,15 @@ public class TicketGUI extends JFrame {
                 }
             };
             eventsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            eventsTable.setModel(tableModel);
-
+            eventsTable.setModel(tableModel);    //column names are now showing up when gui is loaded
         }
 
-        private void updateEventsTable (Vector data){
+        private void updateEventsTable (Vector vectors){
             //data should come back from the API call
-            tableModel.setDataVector(data, columnNames);
+            tableModel.setDataVector(vectors, columnNames);
             System.out.println("vector  ?? " + tableModel.getDataVector());
         }
     }
 
 
 
-//These date spinners will let user pick any date.
-        /*startDateSpinner.setModel(new SpinnerDateModel());
-        endDateSpinner.setModel(new SpinnerDateModel());
-
-        configureDateSpinner();   //to set up date spinner for GUI
-
-    }
-
-
-        Date startDate = (Date) startDateSpinner.getModel().getValue();
-        Date endDate = (Date) endDateSpinner.getModel().getValue();
-
-
-        //make an object to send to the API?
-    }
-
-
-
-
-
-}
-
-    protected void configureDateSpinner() {
-//from https://www.tutorialspoint.com/how-to-create-a-date-spinner-in-java
-        //above creates 2 spinners; I think this part is for the date part only
-      /*  Date today = new Date();                            //i, min, max, step
-        JSpinner spinner = new JSpinner(new SpinnerDateModel(today, null, null, Calendar.MONTH));
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "dd/MM/yy");
-        spinner.setEditor(editor);*/
-
-        //from Clara
-//This date spinner restricts the range of dates
-        //Some random dates... Pick a date, between March 10th, 2010 and June 5th, 2015
-/*
-        Calendar earliestDate = Calendar.getInstance();
-        //make it now??  or how to prevent user from selecting date in past
-        earliestDate.set(2020, Calendar.JANUARY, 10);//Note this is Year, Month, Day
-
-    }
-*/
