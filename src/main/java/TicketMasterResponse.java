@@ -32,6 +32,7 @@ class Embedded {
     public String toString() {
         return "Embedded{" +
                 "events=" + events +
+            //    "_embedded=" + _embeddedV +
                 '}';
     }
 
@@ -79,6 +80,10 @@ class Embedded {
         }
     }
 
+
+    class EmbeddedV{
+        List<Event> venues;
+    }
 
 
     class Venues {

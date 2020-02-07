@@ -12,16 +12,14 @@ public class TicketGUI extends JFrame {
     private JLabel cityName;
     private JPanel mainPanel;
 
-    private JTable eventsTable;
-    private DefaultTableModel tableModel;
-    private Vector columnNames;
     private JButton submitButton;
     private JList<String> eventList;
+    private JComboBox<String> keywordComboBox;
     //private Manager manager;
     private DefaultListModel<String> listModel;
 
 
-    //hashMap of cities and dmaID (which is used in query)
+    //hashMap of cities and dmaId (which is used in query)
     Map<String, String> cityAndDmaID = new HashMap<>();
 
     public TicketGUI() {
@@ -33,7 +31,11 @@ public class TicketGUI extends JFrame {
         DefaultComboBoxModel<String> cityModel = new DefaultComboBoxModel<>(cities);
         cityChoices.setModel(cityModel);
 
-        //configureTableAtStart();
+        String[]keywords = {"select a keyword", "sports", "theatre", "music"};
+        DefaultComboBoxModel<String> keywordModel = new DefaultComboBoxModel<>(keywords);
+        keywordComboBox.setModel(keywordModel);
+
+
         setHashMap();
         addListeners();
 
@@ -61,6 +63,7 @@ public class TicketGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //get user input from JCombo box
                 String city = (String) cityChoices.getSelectedItem();
+                String keyword = (String) keywordComboBox.getSelectedItem();
                 System.out.println(city);  //works
                 //get value(dmaID) associated with that city from HashMap
                 String dma = cityAndDmaID.get(city);
@@ -68,7 +71,7 @@ public class TicketGUI extends JFrame {
                 /*API api = new API(); //one way of doing it
                 List<Event> events = api.getEventsPerCity(dma);*/
                 //send the dma to the API method and get back a list of embedded events
-                List<Embedded.Event> events = API.getEventsPerCity(dma);  //this is not getting to the API method
+                List<Embedded.Event> events = API.getEventsPerCity(dma, keyword);  //this is not getting to the API method
                 //send events list to method to convert it to vectors for display in the JTable
                 System.out.println("events back from API" + events);//vector of objects prints
                 //Vector vectors = convertEventListToVector(events);

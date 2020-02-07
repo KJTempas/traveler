@@ -9,8 +9,7 @@ import java.util.Map;
 public class API {
 
 
-        public static List<Embedded.Event> getEventsPerCity(String dma){
-
+        public static List<Embedded.Event> getEventsPerCity(String dma, String keyword){
 
             Unirest.config().setObjectMapper(new ObjectMapper() {
                 private Gson gson = new Gson();
@@ -30,6 +29,10 @@ public class API {
             String ticketMasterAPIKey = System.getenv("ticketMasterAPIKey");
 
             //String location = "336"; //Mpls/StP for pretesting
+           // String keyword="music";
+            //String keyword="sports"; //testing keywords
+            //String keyword="theatre";
+            //String keyword = "country";
 
             ticketMasterAPIKey ="YKVl3ivkvXGB6wB0m418jXOrKGazQwFS";
 
@@ -37,9 +40,10 @@ public class API {
             //creating a map of query parameters and values
             Map<String, Object> params = new HashMap<>();  //unirest needs string,object
             params.put("apikey", ticketMasterAPIKey);
-            params.put("dmaID", dma);
+            params.put("dmaId", dma);
+            //params.put("classificationName", classification);
             //params.put("city", location);
-            //params.put("keyword", play);
+            params.put("keyword", keyword);
 
 
             //get classes from pojko.sodhanalibrary.com   paste in result of query, and it will generate classes
