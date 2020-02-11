@@ -34,7 +34,7 @@ public class API {
             //String keyword="theatre";
             //String keyword = "country";
 
-            ticketMasterAPIKey ="YKVl3ivkvXGB6wB0m418jXOrKGazQwFS";
+
 
             String baseURL = "https://app.ticketmaster.com/discovery/v2/events.json";
             //creating a map of query parameters and values
