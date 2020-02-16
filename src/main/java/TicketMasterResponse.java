@@ -2,8 +2,6 @@ import java.util.List;
 
 public class TicketMasterResponse {
 
-
-
     //creating an embedded object
     public Embedded _embedded;
 
@@ -49,7 +47,7 @@ class Embedded {
         String name;
         String type;
         String id;
-        //String dates
+        String dates;
 
         //EmbeddedVenue _embedded;
 
@@ -59,7 +57,8 @@ class Embedded {
                     "name='" + name + '\'' +   //why all the " and '????
                     "type='" + type +
                     ", id='" + id + '\'' +
-                    // ", _embedded=" + _embedded +  //this should get me to Venues class
+                   // ", dates='" + dates + '\'' +
+                   //  ", _embedded=" + _embedded +  //this should get me to Venues class
                     '}';
         }
 
@@ -77,6 +76,14 @@ class Embedded {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public String getDates() {
+            return dates;
+        }
+
+        public void setDates(String dates) {
+            this.dates = dates;
         }
     }
 

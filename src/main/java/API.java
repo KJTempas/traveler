@@ -28,21 +28,12 @@ public class API {
             // key is stored in an environmental variable
             String ticketMasterAPIKey = System.getenv("ticketMasterAPIKey");
 
-            //String location = "336"; //Mpls/StP for pretesting
-           // String keyword="music";
-            //String keyword="sports"; //testing keywords
-            //String keyword="theatre";
-            //String keyword = "country";
-
-
 
             String baseURL = "https://app.ticketmaster.com/discovery/v2/events.json";
             //creating a map of query parameters and values
             Map<String, Object> params = new HashMap<>();  //unirest needs string,object
             params.put("apikey", ticketMasterAPIKey);
             params.put("dmaId", dma);
-            //params.put("classificationName", classification);
-            //params.put("city", location);
             params.put("keyword", keyword);
 
 
@@ -55,7 +46,6 @@ public class API {
                     .getBody();
 
             System.out.println(response);
-
 
             return response.get_embedded().getEvents();
 
